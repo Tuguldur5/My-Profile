@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server"
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
@@ -11,26 +14,31 @@ export async function POST(request: Request) {
       )
     }
 
-    // Send email using mailto link approach via a simple SMTP-like fetch
-    // For production, integrate a proper email service (Resend, SendGrid, etc.)
-    // For now, we'll store the message and return success
-    const mailtoRecipient = "tuguldur8000@gmail.com"
-
-    // Log the contact submission (visible in server logs)
-    console.log("=== New Contact Form Submission ===")
-    console.log(`To: ${mailtoRecipient}`)
-    console.log(`From: ${name} <${email}>`)
-    console.log(`Message: ${message}`)
-    console.log("==================================")
+    const data = await resend.emails.send({
+      from: "Portfolio Contact <onboarding@resend.dev>", 
+      // ⚠️ Production дээр өөрийн verified domain email ашиглана
+      to: "tuguldur8000@gmail.com",
+      subject: `Portfolio Contact from ${name}`,
+      reply_to: email,
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    })
 
     return NextResponse.json({
       success: true,
-      message: "Message received successfully",
-      mailto: `mailto:${mailtoRecipient}?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`)}`,
+      message: "Email sent successfully",
+      data,
     })
-  } catch {
+  } catch (error) {
+    console.error("Email sending error:", error)
+
     return NextResponse.json(
-      { error: "Failed to process message" },
+      { error: "Failed to send email" },
       { status: 500 }
     )
   }
