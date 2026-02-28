@@ -38,7 +38,7 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
     }))
   }, [])
 
-  // Calculate angle from figure to the active navbar item's DOM position
+  // Calculate angle from flashlight tip to the active navbar item's DOM position
   useEffect(() => {
     const calcAngle = () => {
       const canvas = canvasRef.current
@@ -46,8 +46,25 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
 
       const w = canvas.width / dpr.current
       const h = canvas.height / dpr.current
+      const scale = Math.min(w / 900, h / 600, 1.2)
+
+      // Replicate exact flashlight tip position from draw logic
       const figX = w * 0.5
       const figY = h * 0.75
+      const lean = Math.sin(currentAngle.current + Math.PI / 2) * 0.05
+      const shLeanX = lean * 8 * scale
+      const torsoTopY = -42 * scale
+      const shoulderWidth = 18 * scale
+      const rShX = figX + shLeanX + shoulderWidth
+      const rShY = figY + torsoTopY
+      const armLength = 35 * scale
+      // Use the approximate current angle for arm direction
+      const approxAngle = currentAngle.current
+      const rHandX = rShX + Math.cos(approxAngle) * armLength
+      const rHandY = rShY + Math.sin(approxAngle) * armLength
+      const flLen = 14 * scale
+      const flTipX = rHandX + Math.cos(approxAngle) * flLen
+      const flTipY = rHandY + Math.sin(approxAngle) * flLen
 
       const navBtn = document.querySelector(
         `[data-nav-section="${activeSection}"]`
@@ -55,24 +72,31 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
 
       if (navBtn) {
         const rect = navBtn.getBoundingClientRect()
+        // NavBtn position is in viewport coordinates, canvas is fullscreen so they match
         const targetX = rect.left + rect.width / 2
         const targetY = rect.top + rect.height / 2
-        targetAngle.current = Math.atan2(targetY - figY, targetX - figX)
+        targetAngle.current = Math.atan2(targetY - flTipY, targetX - flTipX)
       } else {
-        const fallback: Record<Section, number> = {
-          home: -Math.PI * 0.5,
-          about: -Math.PI * 0.38,
-          skills: -Math.PI * 0.25,
-          projects: -Math.PI * 0.12,
-          contact: -Math.PI * 0.05,
-        }
-        targetAngle.current = fallback[activeSection]
+        // Fallback angles pointing upward toward nav area
+        const navItems: Section[] = ["home", "about", "skills", "contact"]
+        const idx = navItems.indexOf(activeSection)
+        const count = navItems.length
+        // Spread angles across the top of screen, from upper-left to upper-right
+        const startAngle = -Math.PI * 0.85
+        const endAngle = -Math.PI * 0.15
+        const t = count > 1 ? idx / (count - 1) : 0.5
+        targetAngle.current = startAngle + (endAngle - startAngle) * t
       }
     }
 
     calcAngle()
+    // Recalculate on resize and after a short delay for layout
     window.addEventListener("resize", calcAngle)
-    return () => window.removeEventListener("resize", calcAngle)
+    const timeout = setTimeout(calcAngle, 100)
+    return () => {
+      window.removeEventListener("resize", calcAngle)
+      clearTimeout(timeout)
+    }
   }, [activeSection])
 
   useEffect(() => {

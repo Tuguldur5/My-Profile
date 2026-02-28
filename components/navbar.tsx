@@ -39,25 +39,23 @@ export function Navbar({ activeSection, onSectionChange }: NavbarProps) {
       <header className="fixed top-0 left-0 right-0 z-50">
         <nav className="mx-auto flex max-w-6xl items-center justify-center px-6 py-5">
           {/* Desktop menu - centered */}
-          <ul className="hidden items-center gap-10 md:flex">
+          <ul className="hidden items-center  gap-10 md:flex">
             {navItems.map((item) => (
               <li key={item.section}>
                 <button
                   data-nav-section={item.section}
                   onClick={() => onSectionChange(item.section)}
-                  className={`group relative py-1 text-sm font-medium tracking-wide transition-colors ${
-                    activeSection === item.section
-                      ? "text-primary-foreground"
-                      : "text-primary-foreground/60 hover:text-primary-foreground"
-                  }`}
+                  className={`group relative py-1 text-sm font-medium tracking-wide transition-colors ${activeSection === item.section
+                    ? "text-white"
+                    : "text-white/50 hover:text-white"
+                    }`}
                 >
                   {item.label}
                   <span
-                    className={`absolute -bottom-0.5 left-0 h-px bg-primary-foreground transition-all duration-300 ${
-                      activeSection === item.section
-                        ? "w-full"
-                        : "w-0 group-hover:w-full"
-                    }`}
+                    className={`absolute -bottom-0.5 left-0 h-px bg-white transition-all duration-300 ${activeSection === item.section
+                      ? "w-full"
+                      : "w-0 group-hover:w-full"
+                      }`}
                   />
                 </button>
               </li>
@@ -100,11 +98,10 @@ function MobileMenu({
                 const details = document.querySelector("details")
                 if (details) details.open = false
               }}
-              className={`block w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${
-                activeSection === item.section
-                  ? "bg-foreground text-background"
-                  : "text-foreground hover:bg-secondary"
-              }`}
+              className={`block w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${activeSection === item.section
+                ? "bg-foreground text-background"
+                : "text-foreground hover:bg-secondary"
+                }`}
             >
               {item.label}
             </button>
