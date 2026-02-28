@@ -16,16 +16,15 @@ export async function POST(request: Request) {
 
     const data = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>", 
-      // ⚠️ Production дээр өөрийн verified domain email ашиглана
       to: "tuguldur8000@gmail.com",
-      subject: `Portfolio Contact from ${name}`,
+      subject: `Tuguldur-mn Profile from ${name}`,
       reply_to: email,
       html: `
         <h2>New Contact Message</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p><strong>${message}</strong></p>
       `,
     })
 

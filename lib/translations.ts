@@ -10,10 +10,10 @@ export const translations = {
       contact: "Contact",
     },
     home: {
-      greeting: "Welcome to my portfolio",
+      greeting: "Welcome to my profile",
       title: "Hi, I'm Tuguldur",
       subtitle: "IT Specialist | Software Developer",
-      bio: "I build scalable, modern software solutions with a focus on clean architecture, performance, and exceptional user experiences. From full-stack applications to cloud infrastructure, I turn complex problems into elegant code.",
+      bio: "I build modern, scalable software solutions with a focus on clean architecture, performance, and a great user experience. From full-stack applications, I transform complex problems into beautiful code.",
       viewProjects: "View Projects",
       contactMe: "Contact Me",
     },
@@ -21,7 +21,7 @@ export const translations = {
       tag: "Get to know me",
       title: "About Me",
       description:
-        "I'm a passionate IT specialist and software developer with experience crafting digital solutions. I thrive on solving complex problems and building software that makes a real impact. My expertise spans full-stack web development, cloud infrastructure, and DevOps practices.",
+        "I am an IT professional and passionate software developer with experience in developing digital solutions. I thrive on solving complex problems and building software that has real impact. My professional skills span full-stack web development and DevOps practices.",
       experienceTitle: "Experience",
       experiences: [
         {
@@ -122,7 +122,7 @@ export const translations = {
       greeting: "Миний профайлд тавтай морил",
       title: "Сайн уу, Намайг Төгөлдөр гэдэг",
       subtitle: "IT Мэргэжилтэн | Хөгжүүлэгч",
-      bio: "Би цэвэр архитектур, гүйцэтгэл, хэрэглэгчийн гайхалтай туршлагад анхаарлаа хандуулан орчин үеийн, өргөтгөх боломжтой програм хангамжийн шийдлүүдийг бүтээдэг. Full-stack програмуудаас эхлээд клоуд дэд бүтэц хүртэл, би нарийн төвөгтэй асуудлуудыг гоёмсог код болгон хувиргадаг.",
+      bio: "Би цэвэр архитектур, гүйцэтгэл, хэрэглэгчийн гайхалтай туршлагад анхаарлаа хандуулан орчин үеийн, өргөтгөх боломжтой програм хангамжийн шийдлүүдийг бүтээдэг. Full-stack програмуудаас эхлээд, би нарийн төвөгтэй асуудлуудыг гоёмсог код болгон хувиргадаг.",
       viewProjects: "Төслүүдийг үзэх",
       contactMe: "Холбоо барих",
     },
@@ -130,7 +130,7 @@ export const translations = {
       tag: "Намайг таньж мэдээрэй.",
       title: "Миний тухай",
       description:
-        "Би дижитал шийдлүүдийг бүтээх туршлагатай, хүсэл эрмэлзэлтэй IT мэргэжилтэн, програм хангамж хөгжүүлэгч. Нарийн төвөгтэй асуудлыг шийдэж, бодит нөлөө бүхий програм хангамж бүтээхэд дуртай. Миний мэргэшсэн чиглэлд full-stack вэб хөгжүүлэлт, клоуд дэд бүтэц, DevOps багтана.",
+        "Би дижитал шийдлүүдийг боловсруулах туршлага хуримтлуулж буй, мэдээллийн технологийн мэргэжилтэн, програм хангамж хөгжүүлэгчийн хүсэл тэмүүлэлтэй хүн. Би нарийн төвөгтэй асуудлуудыг шийдвэрлэх, бодит нөлөө үзүүлэх програм хангамж бүтээхэд амжилтанд хүрдэг. Миний мэргэжлийн ур чадвар нь бүрэн хэмжээний вэб хөгжүүлэлт, DevOps практикийг хамардаг.",
       experienceTitle: "Туршлага",
       experiences: [
         {

@@ -6,8 +6,10 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'Portfolio | IT Specialist & Software Developer',
-  description: 'Personal portfolio of an IT specialist and software developer building scalable, modern software solutions.',
+  title: 'Tuguldur Profile Website ',
+  description: 'Hardwork',
+  icons: { icon:"public\images\bg-skills.jpg"
+    },
 }
 
 export const viewport: Viewport = {
