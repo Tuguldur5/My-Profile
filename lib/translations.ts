@@ -25,32 +25,18 @@ export const translations = {
       experienceTitle: "Experience",
       experiences: [
         {
-          year: "2022 — Present",
-          role: "Senior Software Developer",
-          company: "TechForge Inc.",
+          year: "2025 — Present",
+          role: "Information Technology Intern",
+          company: "Nova Sys Standard LLC.",
           description:
-            "Leading full-stack development of enterprise SaaS applications. Architecting microservices and mentoring junior developers.",
+            "A place that made me understand what the workplace is like. Thank you.",
         },
         {
-          year: "2020 — 2022",
-          role: "Software Developer",
-          company: "CloudScale Solutions",
+          year: "2022 — 2026",
+          role: "Information Technology",
+          company: "Mongolian University Of Science And Technology - School Of Information And Communication Technology",
           description:
-            "Built and maintained cloud-native applications using React, Node.js, and AWS. Improved system performance by 40%.",
-        },
-        {
-          year: "2018 — 2020",
-          role: "IT Specialist",
-          company: "DataBridge Corp.",
-          description:
-            "Managed infrastructure, automated deployment pipelines, and developed internal tools to streamline operations.",
-        },
-        {
-          year: "2016 — 2018",
-          role: "Junior Developer",
-          company: "WebCraft Studio",
-          description:
-            "Started career building responsive websites and web applications. Gained strong foundations in HTML, CSS, JavaScript, and Python.",
+            "I love this place but I also hate it for no reason. Thank you.",
         },
       ],
     },
@@ -60,19 +46,19 @@ export const translations = {
       categories: [
         {
           title: "Frontend",
-          skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", "Vue.js"],
+          skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", ],
         },
         {
           title: "Backend",
-          skills: ["Node.js", "Python", "Go", "REST APIs", "GraphQL", "Express"],
+          skills: ["Node.js", "Python", "REST APIs", "Express"],
         },
         {
           title: "Database",
-          skills: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Prisma", "Drizzle"],
+          skills: ["PostgreSQL", "MongoDB", "MySQL", "Supabase"],
         },
         {
           title: "DevOps",
-          skills: ["Docker", "AWS", "CI/CD", "Kubernetes", "Terraform", "Linux"],
+          skills: ["Docker", "AWS", "Linux"],
         },
       ],
     },
@@ -96,7 +82,7 @@ export const translations = {
           title: "CodeVault",
           description:
             "A secure code snippet manager with syntax highlighting, team sharing, and version history tracking.",
-          tech: ["Next.js", "Prisma", "Tailwind CSS", "Redis"],
+          tech: ["Next.js", "Prisma", "Tailwind CSS", ],
         },
         {
           title: "NetPulse Analytics",
@@ -127,53 +113,39 @@ export const translations = {
   mn: {
     nav: {
       home: "Нүүр",
-      about: "Миний тухай",
+      about: "Миний Тухай",
       skills: "Ур чадвар",
       projects: "Төслүүд",
-      contact: "Холбоо барих",
+      contact: "Холбогдох",
     },
     home: {
       greeting: "Миний профайлд тавтай морил",
-      title: "Сайн байна уу, Би Төгөлдөр",
-      subtitle: "IT Мэргэжилтэн | Програм хангамж хөгжүүлэгч",
+      title: "Сайн уу, Намайг Төгөлдөр гэдэг",
+      subtitle: "IT Мэргэжилтэн | Хөгжүүлэгч",
       bio: "Би цэвэр архитектур, гүйцэтгэл, хэрэглэгчийн гайхалтай туршлагад анхаарлаа хандуулан орчин үеийн, өргөтгөх боломжтой програм хангамжийн шийдлүүдийг бүтээдэг. Full-stack програмуудаас эхлээд клоуд дэд бүтэц хүртэл, би нарийн төвөгтэй асуудлуудыг гоёмсог код болгон хувиргадаг.",
       viewProjects: "Төслүүдийг үзэх",
       contactMe: "Холбоо барих",
     },
     about: {
-      tag: "Намайг танилцуулъя",
+      tag: "Намайг таньж мэдээрэй.",
       title: "Миний тухай",
       description:
         "Би дижитал шийдлүүдийг бүтээх туршлагатай, хүсэл эрмэлзэлтэй IT мэргэжилтэн, програм хангамж хөгжүүлэгч. Нарийн төвөгтэй асуудлыг шийдэж, бодит нөлөө бүхий програм хангамж бүтээхэд дуртай. Миний мэргэшсэн чиглэлд full-stack вэб хөгжүүлэлт, клоуд дэд бүтэц, DevOps багтана.",
       experienceTitle: "Туршлага",
       experiences: [
         {
-          year: "2022 — Одоо",
-          role: "Ахлах програм хөгжүүлэгч",
-          company: "TechForge Inc.",
+          year: "2025 — Одоо",
+          role: "Мэдээллийн технологын дадлагажигч",
+          company: "Нова Сис Стандарт",
           description:
-            "Аж ахуйн нэгжийн SaaS програмуудын full-stack хөгжүүлэлтийг удирдаж, microservice архитектурыг зохион бүтээж, залуу хөгжүүлэгчдэд зөвлөн туслаж байна.",
+            "Ажлын талбар ямар байдаг гэдгийг ойлгуулсан газар. Баярлалаа",
         },
         {
-          year: "2020 — 2022",
-          role: "Програм хөгжүүлэгч",
-          company: "CloudScale Solutions",
+          year: "2022 — 2026",
+          role: "Мэдээллийн технологи",
+          company: "Шинжлэх Ухаан Технологын Их Сургууль - Мэдээлэл, Холбоо Технологын Сургууль ",
           description:
-            "React, Node.js, AWS ашиглан клоуд-натив програмуудыг бүтээж, засвар үйлчилгээ хийсэн. Системийн гүйцэтгэлийг 40%-иар сайжруулсан.",
-        },
-        {
-          year: "2018 — 2020",
-          role: "IT Мэргэжилтэн",
-          company: "DataBridge Corp.",
-          description:
-            "Дэд бүтцийг удирдаж, deployment pipeline-уудыг автоматжуулж, үйл ажиллагааг хялбарчлах дотоод хэрэгслүүд хөгжүүлсэн.",
-        },
-        {
-          year: "2016 — 2018",
-          role: "Залуу хөгжүүлэгч",
-          company: "WebCraft Studio",
-          description:
-            "Responsive вэбсайт болон вэб програмуудыг бүтээж ажил мэргэжлээ эхлүүлсэн. HTML, CSS, JavaScript, Python-д бат суурь тавьсан.",
+            "Би энэ газарт хайртай гэхдээ бас шалтгаангүй үзэн яаддаг. Баярлалаа",
         },
       ],
     },
@@ -183,19 +155,19 @@ export const translations = {
       categories: [
         {
           title: "Frontend",
-          skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", "Vue.js"],
+          skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS"],
         },
         {
           title: "Backend",
-          skills: ["Node.js", "Python", "Go", "REST APIs", "GraphQL", "Express"],
+          skills: ["Node.js", "Python", "REST APIs", "Express"],
         },
         {
-          title: "Өгөгдлийн сан",
-          skills: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Prisma", "Drizzle"],
+          title: "Database",
+          skills: ["PostgreSQL", "MongoDB",  "MySQL",  "Supabase"],
         },
         {
           title: "DevOps",
-          skills: ["Docker", "AWS", "CI/CD", "Kubernetes", "Terraform", "Linux"],
+          skills: ["Docker", "AWS", "Linux"],
         },
       ],
     },
