@@ -1,7 +1,9 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { LanguageProvider } from "@/lib/language-context"
 import { Navbar } from "@/components/navbar"
+import { SectionBackground } from "@/components/section-background"
 import { HomeSection } from "@/components/sections/home-section"
 import { AboutSection } from "@/components/sections/about-section"
 import { SkillsSection } from "@/components/sections/skills-section"
@@ -43,27 +45,30 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar
-        activeSection={activeSection}
-        onSectionChange={handleSectionChange}
-      />
+    <LanguageProvider>
+      <div className="flex min-h-screen flex-col">
+        <SectionBackground activeSection={activeSection} />
+        <Navbar
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+        />
 
-      <main className="flex-1 px-6 pt-28 pb-20">
-        <div className="mx-auto max-w-6xl">
-          <div
-            className={`transition-all duration-300 ease-in-out ${
-              isTransitioning
-                ? "translate-y-2 opacity-0"
-                : "translate-y-0 opacity-100"
-            }`}
-          >
-            {renderSection()}
+        <main className="flex-1 px-6 pt-28 pb-20">
+          <div className="mx-auto max-w-6xl">
+            <div
+              className={`transition-all duration-300 ease-in-out ${
+                isTransitioning
+                  ? "translate-y-2 opacity-0"
+                  : "translate-y-0 opacity-100"
+              }`}
+            >
+              {renderSection()}
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </LanguageProvider>
   )
 }

@@ -1,16 +1,9 @@
 "use client"
 
-import { User } from "lucide-react"
+import { User, Globe } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 type Section = "home" | "about" | "skills" | "projects" | "contact"
-
-const navItems: { label: string; section: Section }[] = [
-  { label: "Home", section: "home" },
-  { label: "About", section: "about" },
-  { label: "Skills", section: "skills" },
-  { label: "Projects", section: "projects" },
-  { label: "Contact", section: "contact" },
-]
 
 interface NavbarProps {
   activeSection: Section
@@ -18,8 +11,18 @@ interface NavbarProps {
 }
 
 export function Navbar({ activeSection, onSectionChange }: NavbarProps) {
+  const { locale, t, toggleLocale } = useLanguage()
+
+  const navItems: { label: string; section: Section }[] = [
+    { label: t.nav.home, section: "home" },
+    { label: t.nav.about, section: "about" },
+    { label: t.nav.skills, section: "skills" },
+    { label: t.nav.projects, section: "projects" },
+    { label: t.nav.contact, section: "contact" },
+  ]
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-md border-b border-border/50">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <button
           onClick={() => onSectionChange("home")}
@@ -49,13 +52,27 @@ export function Navbar({ activeSection, onSectionChange }: NavbarProps) {
           ))}
         </ul>
 
-        <MobileMenu activeSection={activeSection} onSectionChange={onSectionChange} />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleLocale}
+            className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
+            aria-label="Toggle language"
+          >
+            <Globe className="h-3.5 w-3.5" />
+            {locale === "en" ? "MN" : "EN"}
+          </button>
+          <MobileMenu activeSection={activeSection} onSectionChange={onSectionChange} navItems={navItems} />
+        </div>
       </nav>
     </header>
   )
 }
 
-function MobileMenu({ activeSection, onSectionChange }: NavbarProps) {
+function MobileMenu({
+  activeSection,
+  onSectionChange,
+  navItems,
+}: NavbarProps & { navItems: { label: string; section: Section }[] }) {
   return (
     <div className="md:hidden">
       <details className="group relative">

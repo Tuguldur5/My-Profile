@@ -1,49 +1,25 @@
 "use client"
 
 import { ArrowUpRight } from "lucide-react"
-
-const projects = [
-  {
-    title: "CloudSync Dashboard",
-    description:
-      "A real-time monitoring dashboard for cloud infrastructure with automated alerting and resource management.",
-    tech: ["React", "TypeScript", "AWS", "WebSocket"],
-  },
-  {
-    title: "DevFlow CI/CD",
-    description:
-      "An automated deployment pipeline tool that streamlines the development workflow from commit to production.",
-    tech: ["Go", "Docker", "Kubernetes", "PostgreSQL"],
-  },
-  {
-    title: "CodeVault",
-    description:
-      "A secure code snippet manager with syntax highlighting, team sharing, and version history tracking.",
-    tech: ["Next.js", "Prisma", "Tailwind CSS", "Redis"],
-  },
-  {
-    title: "NetPulse Analytics",
-    description:
-      "A network monitoring application providing real-time traffic analysis and performance metrics visualization.",
-    tech: ["Python", "React", "MongoDB", "D3.js"],
-  },
-]
+import { useLanguage } from "@/lib/language-context"
 
 export function ProjectsSection() {
+  const { t } = useLanguage()
+
   return (
     <div className="flex flex-col items-center">
       <p className="mb-2 text-sm font-medium tracking-widest uppercase text-muted-foreground">
-        My work
+        {t.projects.tag}
       </p>
       <h2 className="mb-12 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-        Featured Projects
+        {t.projects.title}
       </h2>
 
       <div className="grid w-full max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
-        {projects.map((project) => (
+        {t.projects.items.map((project) => (
           <div
             key={project.title}
-            className="group relative cursor-pointer rounded-xl border border-foreground p-6 transition-all duration-300 hover:bg-foreground hover:text-background"
+            className="group relative cursor-pointer rounded-xl border border-foreground bg-background/60 backdrop-blur-sm p-6 transition-all duration-300 hover:bg-foreground hover:text-background"
           >
             <div className="mb-3 flex items-start justify-between">
               <h3 className="text-lg font-semibold">{project.title}</h3>
@@ -53,12 +29,12 @@ export function ProjectsSection() {
               {project.description}
             </p>
             <div className="flex flex-wrap gap-2">
-              {project.tech.map((t) => (
+              {project.tech.map((techItem) => (
                 <span
-                  key={t}
+                  key={techItem}
                   className="rounded-md border border-border px-2 py-1 text-xs font-medium transition-colors group-hover:border-background/30"
                 >
-                  {t}
+                  {techItem}
                 </span>
               ))}
             </div>
