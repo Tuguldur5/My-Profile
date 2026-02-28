@@ -15,7 +15,7 @@ export function HomeSection({ onNavigate }: HomeSectionProps) {
       <p className="mb-4 text-sm font-medium tracking-widest uppercase text-muted-foreground">
         {t.home.greeting}
       </p>
-      <h1 className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl text-balance">
+      <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-5xl text-balance">
         {t.home.title}
       </h1>
       <p className="mb-6 text-lg font-medium text-muted-foreground md:text-xl">
@@ -24,7 +24,7 @@ export function HomeSection({ onNavigate }: HomeSectionProps) {
       <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-muted-foreground">
         {t.home.bio}
       </p>
-      <div className="flex flex-col gap-4 sm:flex-row">
+      <div className="flex flex-col gap-4  text-white sm:flex-row">
         <button
           onClick={() => onNavigate("projects")}
           className="group flex items-center gap-2 rounded-lg border border-foreground px-6 py-3 text-sm font-medium text-foreground transition-all hover:bg-foreground hover:text-background"
