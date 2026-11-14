@@ -1,6 +1,7 @@
 "use client"
 
-import { useRef, useEffect, useCallback } from "react"
+import { useRef, useEffect, useCallback, useMemo } from "react"
+import { useDayNight } from "@/lib/day-night-context"
 
 type Section = "home" | "about" | "skills" | "projects" | "contact"
 
@@ -17,7 +18,52 @@ interface Particle {
   opacity: number
 }
 
+interface Palette {
+  body: string
+  bodyDark: string
+  hair: string
+  sideHair: string
+  shadow: string
+  ground: string
+  /** RGB channels used for the beam and lit particles. */
+  beam: string
+  particles: string
+}
+
+/**
+ * The original identity of the site: a person holding a flashlight whose beam
+ * points at the active navbar item. It now renders in both themes, as a dark
+ * silhouette in daylight and a light one at night.
+ */
+function getPalette(isDay: boolean): Palette {
+  if (isDay) {
+    return {
+      body: "rgba(46, 42, 35, 0.9)",
+      bodyDark: "rgba(78, 71, 59, 0.65)",
+      hair: "rgba(30, 27, 22, 0.72)",
+      sideHair: "rgba(48, 44, 36, 0.45)",
+      shadow: "rgba(0, 0, 0, 0.07)",
+      ground: "rgba(0, 0, 0, 0.06)",
+      beam: "255, 176, 64",
+      particles: "70, 58, 40",
+    }
+  }
+
+  return {
+    body: "rgba(220, 220, 220, 0.92)",
+    bodyDark: "rgba(180, 180, 180, 0.7)",
+    hair: "rgba(160, 160, 160, 0.6)",
+    sideHair: "rgba(150, 150, 150, 0.4)",
+    shadow: "rgba(255, 255, 255, 0.08)",
+    ground: "rgba(255, 255, 255, 0.07)",
+    beam: "255, 255, 255",
+    particles: "255, 255, 255",
+  }
+}
+
 export function SectionBackground({ activeSection }: SectionBackgroundProps) {
+  const { isDay } = useDayNight()
+  const palette = useMemo(() => getPalette(isDay), [isDay])
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animRef = useRef<number>(0)
   const currentAngle = useRef(-Math.PI / 2)
@@ -58,7 +104,6 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
       const rShX = figX + shLeanX + shoulderWidth
       const rShY = figY + torsoTopY
       const armLength = 35 * scale
-      // Use the approximate current angle for arm direction
       const approxAngle = currentAngle.current
       const rHandX = rShX + Math.cos(approxAngle) * armLength
       const rHandY = rShY + Math.sin(approxAngle) * armLength
@@ -78,7 +123,7 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
         targetAngle.current = Math.atan2(targetY - flTipY, targetX - flTipX)
       } else {
         // Fallback angles pointing upward toward nav area
-        const navItems: Section[] = ["home", "about", "skills", "contact"]
+        const navItems: Section[] = ["home", "about", "skills", "projects", "contact"]
         const idx = navItems.indexOf(activeSection)
         const count = navItems.length
         // Spread angles across the top of screen, from upper-left to upper-right
@@ -104,6 +149,9 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
     if (!canvas) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
+
+    const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    let reduced = reducedQuery.matches
 
     dpr.current = window.devicePixelRatio || 1
 
@@ -134,9 +182,9 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
       currentAngle.current += diff * 0.03
       const angle = currentAngle.current
 
-      // --- Deep black background ---
-      ctx.fillStyle = "#050505"
-      ctx.fillRect(0, 0, w, h)
+      // Transparent canvas: the page background shows through, so switching
+      // between day and night stays smooth.
+      ctx.clearRect(0, 0, w, h)
 
       // Figure position
       const figX = w * 0.5
@@ -157,6 +205,8 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
       const flTipX = figX + handX + Math.cos(angle) * flLen
       const flTipY = figY + handY + Math.sin(angle) * flLen
 
+      const beam = palette.beam
+
       // === SPOTLIGHT BEAM ===
       const beamLength = Math.max(w, h) * 2
       const beamSpread = 0.3
@@ -171,11 +221,11 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
         flTipX, flTipY, 0,
         flTipX, flTipY, beamLength * 0.7
       )
-      outerGrad.addColorStop(0, "rgba(255, 255, 255, 0.18)")
-      outerGrad.addColorStop(0.05, "rgba(255, 255, 255, 0.12)")
-      outerGrad.addColorStop(0.15, "rgba(255, 255, 255, 0.06)")
-      outerGrad.addColorStop(0.4, "rgba(255, 255, 255, 0.015)")
-      outerGrad.addColorStop(1, "rgba(255, 255, 255, 0)")
+      outerGrad.addColorStop(0, `rgba(${beam}, 0.18)`)
+      outerGrad.addColorStop(0.05, `rgba(${beam}, 0.12)`)
+      outerGrad.addColorStop(0.15, `rgba(${beam}, 0.06)`)
+      outerGrad.addColorStop(0.4, `rgba(${beam}, 0.015)`)
+      outerGrad.addColorStop(1, `rgba(${beam}, 0)`)
 
       ctx.save()
       ctx.beginPath()
@@ -197,12 +247,12 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
         flTipX, flTipY, 0,
         flTipX, flTipY, beamLength * 0.65
       )
-      mainGrad.addColorStop(0, "rgba(255, 255, 255, 0.28)")
-      mainGrad.addColorStop(0.04, "rgba(255, 255, 255, 0.20)")
-      mainGrad.addColorStop(0.12, "rgba(255, 255, 255, 0.10)")
-      mainGrad.addColorStop(0.3, "rgba(255, 255, 255, 0.03)")
-      mainGrad.addColorStop(0.6, "rgba(255, 255, 255, 0.005)")
-      mainGrad.addColorStop(1, "rgba(255, 255, 255, 0)")
+      mainGrad.addColorStop(0, `rgba(${beam}, 0.28)`)
+      mainGrad.addColorStop(0.04, `rgba(${beam}, 0.20)`)
+      mainGrad.addColorStop(0.12, `rgba(${beam}, 0.10)`)
+      mainGrad.addColorStop(0.3, `rgba(${beam}, 0.03)`)
+      mainGrad.addColorStop(0.6, `rgba(${beam}, 0.005)`)
+      mainGrad.addColorStop(1, `rgba(${beam}, 0)`)
 
       ctx.save()
       ctx.beginPath()
@@ -225,11 +275,11 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
         flTipX, flTipY, 0,
         flTipX, flTipY, beamLength * 0.4
       )
-      coreGrad.addColorStop(0, "rgba(255, 255, 255, 0.35)")
-      coreGrad.addColorStop(0.06, "rgba(255, 255, 255, 0.20)")
-      coreGrad.addColorStop(0.15, "rgba(255, 255, 255, 0.08)")
-      coreGrad.addColorStop(0.4, "rgba(255, 255, 255, 0.01)")
-      coreGrad.addColorStop(1, "rgba(255, 255, 255, 0)")
+      coreGrad.addColorStop(0, `rgba(${beam}, 0.35)`)
+      coreGrad.addColorStop(0.06, `rgba(${beam}, 0.20)`)
+      coreGrad.addColorStop(0.15, `rgba(${beam}, 0.08)`)
+      coreGrad.addColorStop(0.4, `rgba(${beam}, 0.01)`)
+      coreGrad.addColorStop(1, `rgba(${beam}, 0)`)
 
       ctx.save()
       ctx.beginPath()
@@ -246,9 +296,9 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
         flTipX, flTipY, 0,
         flTipX, flTipY, 40 * scale
       )
-      tipGlow.addColorStop(0, "rgba(255, 255, 255, 0.5)")
-      tipGlow.addColorStop(0.3, "rgba(255, 255, 255, 0.15)")
-      tipGlow.addColorStop(1, "rgba(255, 255, 255, 0)")
+      tipGlow.addColorStop(0, `rgba(${beam}, 0.5)`)
+      tipGlow.addColorStop(0.3, `rgba(${beam}, 0.15)`)
+      tipGlow.addColorStop(1, `rgba(${beam}, 0)`)
       ctx.beginPath()
       ctx.arc(flTipX, flTipY, 40 * scale, 0, Math.PI * 2)
       ctx.fillStyle = tipGlow
@@ -273,28 +323,51 @@ export function SectionBackground({ activeSection }: SectionBackgroundProps) {
 
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity + beamFactor})`
+        ctx.fillStyle = inBeam && beamFactor > 0
+          ? `rgba(${beam}, ${p.opacity + beamFactor})`
+          : `rgba(${palette.particles}, ${p.opacity})`
         ctx.fill()
       }
 
-      // === DRAW THE FIGURE (more realistic) ===
-      drawPerson(ctx, figX, figY, angle, scale)
+      // === DRAW THE FIGURE ===
+      drawPerson(ctx, figX, figY, angle, scale, palette)
 
-      animRef.current = requestAnimationFrame(draw)
+      // Stop the loop while the tab is hidden or reduced motion is requested.
+      if (!reduced && document.visibilityState !== "hidden") {
+        animRef.current = requestAnimationFrame(draw)
+      }
     }
 
+    const onVisibilityChange = () => {
+      cancelAnimationFrame(animRef.current)
+      if (document.visibilityState === "visible") {
+        animRef.current = requestAnimationFrame(draw)
+      }
+    }
+
+    const onReducedMotionChange = (event: MediaQueryListEvent) => {
+      reduced = event.matches
+      cancelAnimationFrame(animRef.current)
+      if (!reduced) animRef.current = requestAnimationFrame(draw)
+      else draw()
+    }
+
+    document.addEventListener("visibilitychange", onVisibilityChange)
+    reducedQuery.addEventListener("change", onReducedMotionChange)
     animRef.current = requestAnimationFrame(draw)
 
     return () => {
       cancelAnimationFrame(animRef.current)
       window.removeEventListener("resize", resize)
+      document.removeEventListener("visibilitychange", onVisibilityChange)
+      reducedQuery.removeEventListener("change", onReducedMotionChange)
     }
-  }, [initParticles])
+  }, [initParticles, palette])
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10"
+      className="portfolio-bg fixed inset-0 -z-10"
       aria-hidden="true"
     />
   )
@@ -305,20 +378,20 @@ function drawPerson(
   x: number,
   y: number,
   angle: number,
-  scale: number
+  scale: number,
+  palette: Palette
 ) {
   ctx.save()
   ctx.translate(x, y)
 
   const lean = Math.sin(angle + Math.PI / 2) * 0.05
-  const bodyColor = "rgba(220, 220, 220, 0.92)"
-  const darkColor = "rgba(180, 180, 180, 0.7)"
-  const shadowAlpha = "rgba(255, 255, 255, 0.08)"
+  const bodyColor = palette.body
+  const darkColor = palette.bodyDark
 
   // ============ GROUND SHADOW ============
   const groundGlow = ctx.createRadialGradient(0, 68 * scale, 0, 0, 68 * scale, 50 * scale)
-  groundGlow.addColorStop(0, "rgba(255, 255, 255, 0.07)")
-  groundGlow.addColorStop(1, "rgba(255, 255, 255, 0)")
+  groundGlow.addColorStop(0, palette.ground)
+  groundGlow.addColorStop(1, "rgba(0, 0, 0, 0)")
   ctx.beginPath()
   ctx.ellipse(0, 68 * scale, 38 * scale, 10 * scale, 0, 0, Math.PI * 2)
   ctx.fillStyle = groundGlow
@@ -413,7 +486,7 @@ function drawPerson(
   ctx.fill()
 
   // Torso center line (subtle detail)
-  ctx.strokeStyle = "rgba(150, 150, 150, 0.25)"
+  ctx.strokeStyle = darkColor
   ctx.lineWidth = 1 * scale
   ctx.beginPath()
   ctx.moveTo(0, 6 * scale)
@@ -497,7 +570,7 @@ function drawPerson(
   const flPerpX = Math.cos(armAngle + Math.PI / 2) * 3 * scale
   const flPerpY = Math.sin(armAngle + Math.PI / 2) * 3 * scale
 
-  ctx.fillStyle = "rgba(200, 200, 200, 0.9)"
+  ctx.fillStyle = darkColor
   ctx.beginPath()
   ctx.moveTo(rHandX + flPerpX, rHandY + flPerpY)
   ctx.lineTo(flTipX + flPerpX * 1.4, flTipY + flPerpY * 1.4)
@@ -507,7 +580,7 @@ function drawPerson(
   ctx.fill()
 
   // Flashlight lens
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.8)"
+  ctx.strokeStyle = `rgba(${palette.beam}, 0.8)`
   ctx.lineWidth = 2 * scale
   ctx.beginPath()
   ctx.arc(flTipX, flTipY, 5 * scale, 0, Math.PI * 2)
@@ -515,9 +588,9 @@ function drawPerson(
 
   // Lens glow
   const lensGlow = ctx.createRadialGradient(flTipX, flTipY, 0, flTipX, flTipY, 8 * scale)
-  lensGlow.addColorStop(0, "rgba(255, 255, 255, 0.6)")
-  lensGlow.addColorStop(0.5, "rgba(255, 255, 255, 0.2)")
-  lensGlow.addColorStop(1, "rgba(255, 255, 255, 0)")
+  lensGlow.addColorStop(0, `rgba(${palette.beam}, 0.6)`)
+  lensGlow.addColorStop(0.5, `rgba(${palette.beam}, 0.2)`)
+  lensGlow.addColorStop(1, `rgba(${palette.beam}, 0)`)
   ctx.beginPath()
   ctx.arc(flTipX, flTipY, 8 * scale, 0, Math.PI * 2)
   ctx.fillStyle = lensGlow
@@ -543,7 +616,7 @@ function drawPerson(
   // Head shadow
   ctx.beginPath()
   ctx.ellipse(headX + 1.5 * scale, headY + 1 * scale, 10 * scale, 12.5 * scale, 0, 0, Math.PI * 2)
-  ctx.fillStyle = shadowAlpha
+  ctx.fillStyle = palette.shadow
   ctx.fill()
 
   // Head shape
@@ -553,13 +626,13 @@ function drawPerson(
   ctx.fill()
 
   // Hair (short, styled)
-  ctx.fillStyle = "rgba(160, 160, 160, 0.6)"
+  ctx.fillStyle = palette.hair
   ctx.beginPath()
   ctx.ellipse(headX + headTurn * 0.2, headY - 7 * scale, 10 * scale, 6.5 * scale, 0, Math.PI, Math.PI * 2)
   ctx.fill()
 
   // Side hair detail
-  ctx.fillStyle = "rgba(150, 150, 150, 0.4)"
+  ctx.fillStyle = palette.sideHair
   ctx.beginPath()
   ctx.ellipse(headX - 9 * scale, headY - 2 * scale, 3 * scale, 8 * scale, 0.15, 0, Math.PI * 2)
   ctx.fill()
@@ -569,7 +642,7 @@ function drawPerson(
 
   // Face direction indicator (subtle nose/profile hint based on head turn)
   const noseOffsetX = headTurn * 1.2
-  ctx.strokeStyle = "rgba(180, 180, 180, 0.35)"
+  ctx.strokeStyle = darkColor
   ctx.lineWidth = 1.5 * scale
   ctx.beginPath()
   ctx.moveTo(headX + noseOffsetX, headY - 1 * scale)
@@ -579,7 +652,7 @@ function drawPerson(
   // Eyes hint
   const eyeY = headY - 2 * scale
   const eyeSpacing = 4 * scale
-  ctx.fillStyle = "rgba(100, 100, 100, 0.5)"
+  ctx.fillStyle = darkColor
   ctx.beginPath()
   ctx.ellipse(headX + noseOffsetX * 0.5 - eyeSpacing, eyeY, 1.5 * scale, 1 * scale, 0, 0, Math.PI * 2)
   ctx.fill()
